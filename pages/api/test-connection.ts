@@ -1,5 +1,20 @@
 import { NextApiRequest, NextApiResponse } from 'next';
 
+/**
+ * Test Connection API Endpoint
+ * 
+ * Validates Railway API connectivity and authentication
+ * 
+ * Features:
+ * - Checks Railway API token configuration
+ * - Tests GraphQL API connectivity
+ * - Validates user authentication
+ * - Returns user information and token details
+ * - Comprehensive error handling for debugging
+ * 
+ * @param req - Next.js API request object
+ * @param res - Next.js API response object
+ */
 export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse

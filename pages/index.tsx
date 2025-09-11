@@ -1,13 +1,35 @@
 import Head from 'next/head';
 import { useState, useEffect, useRef } from 'react';
 
+/**
+ * Container Status Interface
+ * Defines the structure for tracking Railway deployment status
+ */
 interface ContainerStatus {
   isRunning: boolean;
   deploymentId?: string;
   lastUpdated: string;
 }
 
+/**
+ * Main Home Component - Railway Container Manager with Interactive Mini-Game
+ * 
+ * This component demonstrates:
+ * - Modern React patterns (hooks, refs, state management)
+ * - Railway GraphQL API integration
+ * - HTML5 Canvas game development
+ * - Real-time UI updates and animations
+ * - Error handling and user feedback
+ * 
+ * Key Features:
+ * - Deployment management (start, stop, restart)
+ * - Interactive "Byte Wrangler" mini-game
+ * - Dynamic difficulty progression
+ * - Glass-morphism UI design
+ */
 export default function Home() {
+  // ===== STATE MANAGEMENT =====
+  // Core application state
   const [currentTime, setCurrentTime] = useState<string>('');
   const [status, setStatus] = useState<ContainerStatus>({
     isRunning: false,
@@ -17,6 +39,8 @@ export default function Home() {
   const [error, setError] = useState<string | null>(null);
   const [success, setSuccess] = useState<string | null>(null);
   const [showConfig, setShowConfig] = useState(false);
+  
+  // Game state management
   const [boredMode, setBoredMode] = useState(false);
   const [showGame, setShowGame] = useState(false);
   const [gameResult, setGameResult] = useState<'playing' | 'success' | 'failed'>('playing');
@@ -25,6 +49,8 @@ export default function Home() {
   const [mousePos, setMousePos] = useState({ x: 0, y: 0 });
   const [isDragging, setIsDragging] = useState(false);
   const [bytesWrangled, setBytesWrangled] = useState(0);
+  
+  // Canvas and animation references for the mini-game
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const gameIntervalRef = useRef<NodeJS.Timeout | null>(null);
   const animationRef = useRef<number | null>(null);
@@ -50,6 +76,16 @@ export default function Home() {
     }
   };
 
+  /**
+   * Perform Railway Deployment
+   * 
+   * Handles the core deployment logic with:
+   * - Duplicate deployment prevention
+   * - Loading state management
+   * - Error handling and user feedback
+   * - Success/failure message display
+   * - Game result integration
+   */
   const performDeployment = async () => {
     // Prevent multiple deployments
     if (isDeploying) {
@@ -142,7 +178,18 @@ export default function Home() {
     setSuccess(null);
   };
 
-  // Game logic
+  // ===== GAME LOGIC =====
+  /**
+   * Start Interactive Mini-Game
+   * 
+   * Initializes the "Byte Wrangler" game with:
+   * - HTML5 Canvas setup and context
+   * - Game state initialization (bytes, ghosts, controller)
+   * - Mouse event handlers for interaction
+   * - Game loop with requestAnimationFrame
+   * - Dynamic difficulty progression
+   * - Byte respawning system
+   */
   const startGame = () => {
     const canvas = canvasRef.current;
     if (!canvas) {

@@ -1,5 +1,21 @@
 import { NextApiRequest, NextApiResponse } from 'next';
 
+/**
+ * Start Deployment API Endpoint
+ * 
+ * Handles Railway service redeployment using GraphQL API v2
+ * 
+ * Features:
+ * - Validates required parameters (projectId, serviceId)
+ * - Authenticates with Railway API token
+ * - Fetches latest deployment information
+ * - Triggers new deployment from existing source
+ * - Comprehensive error handling
+ * - Returns deployment status and metadata
+ * 
+ * @param req - Next.js API request object
+ * @param res - Next.js API response object
+ */
 export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse

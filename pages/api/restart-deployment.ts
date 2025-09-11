@@ -1,5 +1,23 @@
 import { NextApiRequest, NextApiResponse } from 'next';
 
+/**
+ * Restart Deployment API Endpoint
+ * 
+ * Implements Railway service restart with robust fallback mechanisms
+ * 
+ * Features:
+ * - Fetches latest deployment ID using recommended Railway approach
+ * - Attempts multiple restart methods in order of preference:
+ *   1. deploymentRestart (official restart)
+ *   2. serviceInstanceRedeploy (alternative method)
+ *   3. deploymentRedeploy (fallback)
+ * - Validates deployment status before attempting restart
+ * - Comprehensive error handling and logging
+ * - Returns detailed success/failure information
+ * 
+ * @param req - Next.js API request object
+ * @param res - Next.js API response object
+ */
 export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse
@@ -159,7 +177,7 @@ export default async function handler(
           console.log('deploymentRestart not available or permission denied, trying alternatives...');
         }
       }
-    } catch (e) {
+    } catch (e: any) {
       console.log('deploymentRestart error:', e.message);
     }
 
@@ -197,7 +215,7 @@ export default async function handler(
         } else {
           console.log('serviceInstanceRedeploy failed:', serviceRedeployData.errors[0]?.message);
         }
-      } catch (e) {
+      } catch (e: any) {
         console.log('serviceInstanceRedeploy error:', e.message);
       }
     }
